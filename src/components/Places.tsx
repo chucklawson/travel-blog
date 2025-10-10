@@ -8,40 +8,42 @@ export type Place = Schema["Place"]['type']
 
 function Places() {
 
-    const client = generateClient<Schema>();
-    const [places, setPlaces] = useState<Place[]>([])
+  const client = generateClient<Schema>();
+  const [places, setPlaces] = useState<Place[]>([])
 
-    useEffect(() => {
-        const handleData = async () => {
-            const subscription = client.models.Place.observeQuery().subscribe({
-                next: (data) => setPlaces([...data.items])
-            })
-            return () => subscription.unsubscribe();
-        }
-        handleData();
-    }, []);
-
-    function renderPlaces() {
-        const rows: any[] = []
-        for (const place of places) {
-            rows.push(<PlaceComponent place={place} key={place.id} />)
-        }
-        return rows
+  useEffect(() => {
+    const handleData = async () => {
+      const subscription = client.models.Place.observeQuery().subscribe({
+        next: (data) => setPlaces([...data.items])
+      })
+      return () => subscription.unsubscribe();
     }
+    handleData();
+  }, []);
 
-    return <main>
-        <h1>Here are the awesome places you visited:</h1><br />
-        {renderPlaces()}
-    </main>
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  function renderPlaces() {
+    const rows: any[] = []
+    for (const place of places) {
+      rows.push(<PlaceComponent place={place} key={place.id} />)
+    }
+    return rows
+  }
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+
+  return <main>
+    <h1>Here are the awesome places you visited:</h1><br />
+    {renderPlaces()}
+  </main>
 
 
 
 
 
 
-    return <main>
-        <h1>This is the places component</h1><br />
-    </main>
+  return <main>
+    <h1>This is the places component</h1><br />
+  </main>
 }
 
 export default Places
